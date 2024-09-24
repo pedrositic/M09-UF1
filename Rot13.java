@@ -14,6 +14,7 @@ public class Rot13 {
 
     public static void main(String[] args) {
         System.out.println(xifraRot13("Bona tarda, em dic Pau!"));
+        System.out.println(desxifraRot13("Oban gneqn, rz qvp Cnh!"));
     }
 
     public static String xifraRot13(String text) {
@@ -35,10 +36,41 @@ public class Rot13 {
                 // Obtener posicion de la letra en el array
                 posList = getPos(ch, abcMay);
                 // Cambiarla por la cifrada
-                newChar = changeCh(posList, abcMay);
+                newChar = changeCh(posList, abcMay, true);
             } else if (Character.isLowerCase(ch)) {
                 posList = getPos(ch, abcMin);
-                newChar = changeCh(posList, abcMin);
+                newChar = changeCh(posList, abcMin, true);
+            }
+
+            result += newChar;
+        }
+
+        return result;
+    }
+
+    public static String desxifraRot13(String text) {
+        String result = "";
+
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            int posList = 0;
+            char newChar = ' ';
+
+            // Saltar espacio y signos de puntuacion
+            if (!Character.isAlphabetic(ch)) {
+                result += ch;
+                continue;
+            }
+
+            // Distinguir entre minúsculas y mayúsculas
+            if (Character.isUpperCase(ch)) {
+                // Obtener posicion de la letra en el array
+                posList = getPos(ch, abcMay);
+                // Cambiarla por la cifrada
+                newChar = changeCh(posList, abcMay, false);
+            } else if (Character.isLowerCase(ch)) {
+                posList = getPos(ch, abcMin);
+                newChar = changeCh(posList, abcMin, false);
             }
 
             result += newChar;
@@ -59,13 +91,26 @@ public class Rot13 {
     }
 
     // Cambio de letra
-    public static char changeCh(int posList, char[] array) {
-        // Si al sumarle 13 se pasa del abecedario
-        // le restamos 26 para obtener la letra equivalente
-        if ((posList + 13) >= 26) {
-            posList = (posList + 13) - 26;
-        } else {
-            posList += 13;
+    public static char changeCh(int posList, char[] array, boolean mode) {
+        // boolean == true -> xifrar
+        if (mode) {
+            // Si al sumarle 13 se pasa del abecedario
+            // le restamos 26 para obtener la letra equivalente
+            if ((posList + 13) >= 26) {
+                posList = (posList + 13) - 26;
+            } else {
+                posList += 13;
+            }
+        }
+        // boolean == false -> desxifrar
+        else {
+            // Si al restarle 13 se pasa del abecedario
+            // le sumamos 26 para obtener la letra equivalente
+            if ((posList - 13) < 0) {
+                posList = (posList - 13) + 26;
+            } else {
+                posList -= 13;
+            }
         }
         // Obtenemos del array correspondiente la letra adecuada
         return array[posList];
