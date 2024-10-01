@@ -25,8 +25,10 @@ public class RotX {
         System.out.print("Nombre de rotacions:\n-> ");
         int numRota = sc.nextInt();
         sc.close();
-        System.out.println(xifraRotX("AbC", numRota));
-        System.out.println(desxifraRotX("ÀcÇ", numRota));
+        System.out.println(xifraRotX("Hola, bona tarda!", numRota));
+        System.out.println(desxifraRotX(xifraRotX("Hola, bona tarda!", numRota), numRota));
+        forcaBrutaRotx(xifraRotX("Hola, bona tarda!", numRota));
+
     }
 
     public static String xifraRotX(String text, int numRota) {
@@ -44,8 +46,10 @@ public class RotX {
             int letterPos = findLetterPos(ch);
             boolean minu = false;
             // Si no esta en ningun abecedario
-            if (letterPos == -1)
+            if (letterPos == -1) {
+                sb.append(ch);
                 continue;
+            }
             // Si es minuscula
             if (letterPos >= 100) {
                 letterPos -= 100; // Normalizamos el valor
@@ -91,6 +95,13 @@ public class RotX {
 
         // Si no la troba retorna -1
         return -1;
+    }
+
+    public static void forcaBrutaRotx(String text) {
+        System.err.println("Se listan " + LENABC + " posibles coincidencias:");
+        for (int i = 0; i<LENABC; i++){
+            System.out.println(i+1 + " Rot ->\t" + xifraRotX(text, i));
+        }
     }
 
 }
