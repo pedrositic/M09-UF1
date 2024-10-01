@@ -8,7 +8,8 @@ import java.util.Scanner;
  * 
  * Fer modul que pugui xifrar i desxifrar (boolean dreta)
  * 
- * Fer modul que recorra el abc buscant la lletra i retorna si l'ha trobat, la posicio, sino -1
+ * Fer modul que recorra el abc buscant la lletra i retorna si l'ha trobat, la
+ * posicio, sino -1
  * 
  */
 public class RotX {
@@ -24,17 +25,72 @@ public class RotX {
         System.out.print("Nombre de rotacions:\n-> ");
         int numRota = sc.nextInt();
         sc.close();
-        System.out.println(numRota);
+        System.out.println(xifraRotX("AbC", numRota));
+        System.out.println(desxifraRotX("ÀcÇ", numRota));
     }
 
-    public static String rotaX(String text, boolean dreta) {
+    public static String xifraRotX(String text, int numRota) {
+        return rotaX(text, true, numRota);
+    }
+
+    public static String desxifraRotX(String text, int numRota) {
+        return rotaX(text, false, numRota);
+    }
+
+    public static String rotaX(String text, boolean dreta, int numRota) {
         StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            int letterPos = findLetterPos(ch);
+            boolean minu = false;
+            // Si no esta en ningun abecedario
+            if (letterPos == -1)
+                continue;
+            // Si es minuscula
+            if (letterPos >= 100) {
+                letterPos -= 100; // Normalizamos el valor
+                minu = true;
+            }
 
+            // Si estem xifrant
+            if (dreta) {
+                if ((letterPos + numRota) >= LENABC) {
+                    letterPos = (letterPos + numRota) - LENABC;
+                } else {
+                    letterPos += numRota;
+                }
+            }
+            // Si estem desxifrant
+            else {
+                if ((letterPos - numRota) < 0) {
+                    letterPos = (letterPos - numRota) + LENABC;
+                } else {
+                    letterPos -= numRota;
+                }
+            }
 
-        sb.append(ch);
+            ch = minu ? ABCMIN[letterPos] : ABCMAY[letterPos];
+
+            sb.append(ch);
+        }
 
         // Convertim el buffer en String
-        sb.toString();
+        return sb.toString();
+    }
+
+    public static int findLetterPos(char ch) {
+
+        for (int i = 0; i < LENABC; i++) {
+            if (ch == ABCMAY[i]) {
+                return i;
+            }
+            if (ch == ABCMIN[i]) {
+                return i + 100;
+            }
+        }
+
+        // Si no la troba retorna -1
+        return -1;
     }
 
 }
