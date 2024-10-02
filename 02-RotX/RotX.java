@@ -83,7 +83,6 @@ public class RotX {
     }
 
     public static int findLetterPos(char ch) {
-
         for (int i = 0; i < LENABC; i++) {
             if (ch == ABCMAY[i]) {
                 return i;
@@ -92,7 +91,6 @@ public class RotX {
                 return i + 100;
             }
         }
-
         // Si no la troba retorna -1
         return -1;
     }
