@@ -55,37 +55,51 @@ public class Polialfabetic {
         abcPermutat = abc;
     }
 
-    private static String xifraText(String text, char[] original, char[] permutat) {
-        StringBuffer sb = new StringBuffer();
+    public static String xifraPoliAlfa(String text) {
+        return xifraText(text, true);
+    }
+
+    public static String desxifraPoliAlfa(String text) {
+        return xifraText(text, false);
+    }
+
+    private static String xifraText(String text, boolean xifra) {
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < text.length(); i++) {
+            // Permutem l'alfabet
+            permutaAlfabet();
+
             char ch = text.charAt(i);
-            int pos = -1;
             boolean mayus = false;
             // Si es majuscula posem a true i la pasem a minuscula
             if (Character.isUpperCase(ch)) {
                 mayus = true;
                 ch = Character.toLowerCase(ch);
             }
-            
-            pos = getPosLletra(original, ch, pos);
+
+            // Obtenim la posició de la lletra segons l'operacio que estem fent
+            int pos = getPosLletra(xifra ? ABCMIN : abcPermutat, ch);
 
             // Si no trobem la lletra
             if (pos == -1) {
                 sb.append(ch);
-                continue;
+            } else {
+                // Xifrem la lletra i comprovem si ha de ser majúscula
+                char xifrat = xifra ? abcPermutat[pos] : ABCMIN[pos];
+                sb.append(mayus ? Character.toUpperCase(xifrat) : xifrat);
             }
-            // Xifrem la lletra
-            ch = permutat[pos];
-
-            // Si era majuscula la convertim a majuscula
-            if (mayus) {
-                ch = Character.toUpperCase(ch);
-            }
-
-            sb.append(ch);
         }
-
         return sb.toString();
+    }
+
+    private static int getPosLletra(char[] original, char ch) {
+        // Obtenim la posicio de la lletra dins del abecedari
+        for (int j = 0; j < LENABC; j++) {
+            if (original[j] == ch) {
+                return j;
+            }
+        }
+        return -1;
     }
 }
