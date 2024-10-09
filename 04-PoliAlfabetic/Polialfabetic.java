@@ -47,12 +47,11 @@ public class Polialfabetic {
 
         Collections.shuffle(abcList, rand);
 
-        char[] abc = new char[LENABC];
+        abcPermutat = new char[LENABC];
 
         for (int i = 0; i < LENABC; i++) {
-            abc[i] = abcList.get(i);
+            abcPermutat[i] = abcList.get(i);
         }
-        abcPermutat = abc;
     }
 
     public static String xifraPoliAlfa(String text) {
