@@ -43,11 +43,10 @@ public class Monoalfabetic {
     }
 
     private static String xifraText(String text, char[] original, char[] permutat) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         for (int i = 0; i < text.length(); i++) {
             char ch = text.charAt(i);
-            int pos = -1;
             boolean mayus = false;
             // Si es majuscula posem a true i la pasem a minuscula
             if (Character.isUpperCase(ch)) {
@@ -55,36 +54,28 @@ public class Monoalfabetic {
                 ch = Character.toLowerCase(ch);
             }
             
-            pos = getPosLletra(original, ch, pos);
+            int pos = getPosLletra(original, ch);
 
             // Si no trobem la lletra
             if (pos == -1) {
                 sb.append(ch);
-                continue;
+            } else {
+                // Xifrem la lletra i comprovem si ha de ser majúscula
+                char xifrat = permutat[pos];
+                sb.append(mayus ? Character.toUpperCase(xifrat) : xifrat);
             }
-            // Xifrem la lletra
-            ch = permutat[pos];
-
-            // Si era majuscula la convertim a majuscula
-            if (mayus) {
-                ch = Character.toUpperCase(ch);
-            }
-
-            sb.append(ch);
         }
-
         return sb.toString();
     }
 
-    private static int getPosLletra(char[] original, char ch, int pos) {
+    private static int getPosLletra(char[] original, char ch) {
         // Obtenim la posicio de la lletra dins del abecedari
         for (int j = 0; j < LENABC; j++) {
             if (original[j] == ch) {
-                pos = j;
-                break;
+                return j;
             }
         }
-        return pos;
+        return -1;
     }
 
 }
