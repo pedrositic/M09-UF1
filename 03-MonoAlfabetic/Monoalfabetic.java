@@ -33,7 +33,7 @@ public class Monoalfabetic {
         }
         return abc;
     }
-
+    
     public static String xifraMonoAlfa(String text, char[] abcPermutat) {
         return xifraText(text, ABCMIN, abcPermutat);
     }
