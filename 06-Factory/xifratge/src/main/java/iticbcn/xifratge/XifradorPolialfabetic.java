@@ -86,12 +86,14 @@ public class XifradorPolialfabetic implements Xifrador {
     @Override
     public TextXifrat xifra(String msg, String clau) throws ClauNoSuportada {
         clauCorrecta(clau);
+        initRandom(Integer.parseInt(clau));
         return new TextXifrat(xifraPoliAlfa(msg).getBytes());
     }
 
     @Override
     public String desxifra(TextXifrat xifrat, String clau) throws ClauNoSuportada {
         clauCorrecta(clau);
+        initRandom(Integer.parseInt(clau));
         return desxifraPoliAlfa(xifrat.toString());
     }
 
@@ -100,7 +102,7 @@ public class XifradorPolialfabetic implements Xifrador {
             throw new ClauNoSuportada("Clau de Polialfabétic ha de ser un String");
         }
         try {
-            Long.parseLong(clau);
+            long num = Long.parseLong(clau);
         } catch (NumberFormatException e) {
             throw new ClauNoSuportada("La clau de Polialfabètic ha de ser un String convertible a long");
         }
