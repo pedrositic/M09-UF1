@@ -14,7 +14,6 @@ public class XifradorAES implements Xifrador {
 
     private final int MIDA_IV = 16;
     private byte[] iv = new byte[MIDA_IV];
-    private final String CLAU = "LaClauSecretaQueVulguis";
 
     public byte[] xifraAES(String msg, String clau)
             throws Exception {
