@@ -26,8 +26,9 @@ public class Hashes {
     }
 
     public String getPBKDF2AmbSalt(String pw, String salt) throws Exception {
+        byte[] abSalt = salt.getBytes(StandardCharsets.UTF_8);
 
-        PBEKeySpec spec = new PBEKeySpec(pw.toCharArray(), salt.getBytes(), 65536, 128);
+        PBEKeySpec spec = new PBEKeySpec(pw.toCharArray(), abSalt, 65536, 128);
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
         byte[] hash = factory.generateSecret(spec).getEncoded();
@@ -47,8 +48,8 @@ public class Hashes {
         // Cada bucle representa una posició a la contrassenya
         // Cada bucle genera totes les posibles contrassenyes per la seva longitud
 
+        char[] chars = new char[6];
         for (char one : charset) { // a
-            char[] chars = new char[6];
             chars[0] = one;
 
             // Es crea un nou array de chars que nomes conté els caracters
@@ -99,7 +100,7 @@ public class Hashes {
         npass++;
 
         String pwStr = stringer(pw, len);
-        System.out.println(pwStr);
+        // System.out.println(pwStr);
         String generatedHash = alg.equals("SHA-512") ? getSHA512AmbSalt(pwStr, salt) : getPBKDF2AmbSalt(pwStr, salt);
 
         if (generatedHash.equals(hash)) {
@@ -111,7 +112,7 @@ public class Hashes {
     private String stringer(char[] pw, int len) {
         StringBuffer result = new StringBuffer();
 
-        for (int i = 0; i < len; i++) {
+        for (int i = 0; i <= len; i++) {
             result.append(pw[i]);
         }
 
@@ -136,7 +137,7 @@ public class Hashes {
 
     public static void main(String[] args) throws Exception {
         String salt = "qpoweiruañslkdfjz";
-        String pw = "aaabF!";
+        String pw = "ab";
         Hashes h = new Hashes();
         String[] aHashes = { h.getSHA512AmbSalt(pw, salt),
                 h.getPBKDF2AmbSalt(pw, salt) };
